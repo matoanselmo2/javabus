@@ -1,19 +1,33 @@
 plugins {
-    id("java")
+    java
+    `maven-publish`
 }
 
 group = "me.mato"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
+publishing {
+    publications {
+        create<MavenPublication>("gpr") {
+            from(components["java"])
+            groupId = project.group.toString()
+            artifactId = "javabus"
+            version = project.version.toString()
+        }
+    }
 
-tasks.test {
-    useJUnitPlatform()
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/matoanselmo2/javabus")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
