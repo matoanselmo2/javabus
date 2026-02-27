@@ -1,16 +1,7 @@
 package me.mato.eventbus;
 
 import java.lang.reflect.Method;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class EventBus {
@@ -91,9 +82,7 @@ public final class EventBus {
         List<Method> methods = new ArrayList<>();
         Class<?> current = type;
         while (current != null && current != Object.class) {
-            for (Method declaredMethod : current.getDeclaredMethods()) {
-                methods.add(declaredMethod);
-            }
+            Collections.addAll(methods, current.getDeclaredMethods());
             current = current.getSuperclass();
         }
         return methods;
