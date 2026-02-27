@@ -10,10 +10,25 @@ repositories {
     mavenCentral()
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
 publishing {
     publications {
         create<MavenPublication>("gpr") {
             from(components["java"])
+
             groupId = project.group.toString()
             artifactId = "javabus"
             version = project.version.toString()
